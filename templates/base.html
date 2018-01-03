@@ -91,8 +91,8 @@
 
     <!-- Begin page content -->
     <div class="container">
-
-       {% block messages %}       
+      {% block messages %}
+          
           {% if messages %}
             {% regroup messages|dictsort:"tags" by tags as message_list  %}
             {% for tags in message_list %}
@@ -114,9 +114,10 @@
                   </div>
             {% endfor %}
           {% endif %}
-        {% endblock %}
 
-         {% block content %}
+        {% endblock %}
+      
+      {% block content %}
       <div class="page-header">
         <h1>Sticky footer with fixed navbar</h1>
       </div>

@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3',
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

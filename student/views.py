@@ -11,12 +11,15 @@ from django.db.models import Count, Sum, Q, Case, Value, When, IntegerField
 
 # Create your views here.
 
+@login_required(login_url='/accounts/login/')
 def home(request):
 	return render(request,'base.html')
 
+@login_required(login_url='/accounts/login/')
 def home_json(request):
 	return render(request,'student/home_json.html')
 
+@login_required(login_url='/accounts/login/')
 def student_new(request):
 
     if request.method == "POST":
@@ -32,9 +35,42 @@ def student_new(request):
         form = StudentForm()
     return render(request, 'student/student_new.html', {'form': form})
 
+@login_required(login_url='/accounts/login/')
+def student_edit(request,pk):
+
+    student = get_object_or_404(Student, pk=pk)
+    if request.method == "POST":
+        form = StudentForm(request.POST,instance=student)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.createdby = request.user
+            student.save()
+            # return redirect('post_detail', pk=post.pk)
+            messages.success(request, "Student record with ID: " + str(student.pk) + " has been updated! ")
+            return redirect(reverse_lazy('student_detail',kwargs={'pk': student.pk }))
+    else:
+        form = StudentForm(instance=student)
+    
+    return render(request, 'student/student_edit.html', {'form': form})
+
+@login_required(login_url='/accounts/login/')
 def student_detail(request,pk):
     student = get_object_or_404(Student, pk=pk)
     return render(request, 'student/student_detail.html', {'student': student})
+
+@login_required(login_url='/accounts/login/')
+def student_remove(request,pk):
+
+    student = get_object_or_404(Student, pk=pk)
+    if request.method == "POST":
+        if request.POST.get("submit_yes", ""):
+            icnum = student.icnum
+            student.delete()
+            messages.success(request, "Student record with ID: " + str(icnum) + " has been removed! ")
+            return redirect(reverse_lazy('student_home'))
+
+    return render(request, 'student/student_confirm_delete.html', {'student': student, 'pk':pk})
+
 
 	
 # Student JSON list filtering

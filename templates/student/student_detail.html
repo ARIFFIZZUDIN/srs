@@ -30,7 +30,10 @@
         </tbody>
 	  </table>
 
-    
+     <p class="text-center">
+      <a href="{% url 'student_edit' student.pk %}" class="btn btn-primary" >Edit player</a>
+      <a href="{% url 'student_remove' student.pk %}" class="btn btn-primary" >buang player</a>
+    </p>
 
 <!-- </div> -->
 {% endblock %}
